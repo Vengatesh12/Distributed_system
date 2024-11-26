@@ -1,7 +1,7 @@
 steps:
   # Step 1: Build the Backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend-app:latest', './backend']  # Adjust path if needed
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend-app:latest', './database']  # Adjust path if needed
 
   # Step 2: Build the Frontend Docker image
   - name: 'gcr.io/cloud-builders/docker'
