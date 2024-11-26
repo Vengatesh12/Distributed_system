@@ -1,22 +1,30 @@
 steps:
   # Step 1: Build the Backend Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend-app:latest', './database']
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/backend-app:latest', './backend']  # Adjust path if needed
 
   # Step 2: Build the Frontend Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend-app:latest', './frontend']  # Assuming frontend code is in ./frontend
+    args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/frontend-app:latest', './frontend']  # Adjust path if needed
 
-  # Step 3: Deploy the Backend image to GKE
+  # Step 3: Push the Backend Docker image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT_ID}/backend-app:latest']
+
+  # Step 4: Push the Frontend Docker image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT_ID}/frontend-app:latest']
+
+  # Step 5: Deploy the Backend image to GKE using kubectl
   - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment/myapp-deployment', 'myapp=gcr.io/${_PROJECT_ID}/backend-app:latest', '--namespace=default']
+    args: ['set', 'image', 'deployment/backend-deployment', 'backend=gcr.io/${_PROJECT_ID}/backend-app:latest', '--namespace=default']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
 
-  # Step 4: Deploy the Frontend image to GKE
+  # Step 6: Deploy the Frontend image to GKE using kubectl
   - name: 'gcr.io/cloud-builders/kubectl'
-    args: ['set', 'image', 'deployment/myapp-deployment', 'frontend=gcr.io/${_PROJECT_ID}/frontend-app:latest', '--namespace=default']
+    args: ['set', 'image', 'deployment/frontend-deployment', 'frontend=gcr.io/${_PROJECT_ID}/frontend-app:latest', '--namespace=default']
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
@@ -28,4 +36,4 @@ images:
 substitutions:
   _PROJECT_ID: 'iron-wave-434723-e4'  # Your GCP Project ID
   _ZONE: 'northamerica-northeast1'
-  _CLUSTER_NAME: 'my-flask-cluster'
+  _CLUSTER_NAME: 'my-flask-cluster'  # Adjust if necessary
