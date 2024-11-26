@@ -17,15 +17,6 @@ spec:
         image: gcr.io/$iron-wave-434723-e4/backend-app:latest  # Ensure you have built this image and pushed to a registry if needed
         ports:
         - containerPort: 5001
-        env:
-        - name: DB_SERVER
-          value: "34.57.106.211"  # Replace with your Cloud SQL instance IP
-        - name: DB_NAME
-          value: "myappdb"  # Replace with your database name
-        - name: DB_USER
-          value: "sqlserver"  # Replace with your database username
-        - name: DB_PASSWORD
-          value: "Tn50@4669"  # Replace with your database password
 ---
 apiVersion: v1
 kind: Service
@@ -38,5 +29,4 @@ spec:
   - protocol: TCP
     port: 5001
     targetPort: 5001
-  type: ClusterIP  # This will be internal within Kubernetes, you can change to LoadBalancer if needed
-
+  type: LoadBalancer  # Exposes frontend to the public via an external IP

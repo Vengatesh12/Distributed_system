@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gcr.io/$iron-wave-434723-e4/frontend-app:latest  # Ensure you have built this image and pushed to a registry if needed
+        image: gcr.io/iron-wave-434723-e4/frontend-app:latest  # Ensure this image is available
         ports:
         - containerPort: 5000
 ---
