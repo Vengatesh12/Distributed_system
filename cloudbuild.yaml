@@ -33,6 +33,9 @@ images:
   - 'gcr.io/${_PROJECT_ID}/backend-app:latest'
   - 'gcr.io/${_PROJECT_ID}/frontend-app:latest'
 
+options:
+  logging: CLOUD_LOGGING_ONLY  # Use Cloud Logging instead of logs bucket
+
 substitutions:
   _PROJECT_ID: 'iron-wave-434723-e4'  # Your GCP Project ID
   _ZONE: 'northamerica-northeast1'
